@@ -1,0 +1,184 @@
+# Python Agentic Workbench
+
+A hands-on Python project and learning journey — build a CLI and agent system step by step, mastering Python by doing real automation!
+
+---
+
+## 🚀 Project Overview
+
+**Python Agentic Workbench** guides you from a basic CLI task manager to a Python-powered repo analysis agent. You’ll gradually add features like service layers, file scanning, API integrations, async workflows, a tool registry, agentic planning loops, and finally LLM-powered automation — all using best practices and modern Python.
+
+This project is about building deep operational fluency, not just learning syntax. Each milestone adds real-world automation capability and pushes you to structure code the way working Pythonists do.
+
+---
+
+## 🧠 Learning Goals
+
+- Python project structure & modularization
+- Functions, classes, and type hints
+- Dataclasses and models (incl. Pydantic)
+- File system automation and scanning
+- JSON & Markdown I/O
+- Robust CLI application development
+- Error handling & execution logging
+- HTTP/API clients
+- Async I/O & concurrent workflows
+- Tool registry fundamentals
+- Agentic planning, loops, and memory
+- LLM API integration (OpenAI, Ollama, etc.)
+- Test-driven development (with pytest)
+- Packaging & local tool distribution
+
+---
+
+## 🛣️ Milestone Roadmap
+
+1. **Task Manager CLI:**
+   - Add/list/complete/delete tasks using JSON for storage.
+2. **Domain Models & Services:**
+   - Structured Task/Project models; decouple storage from logic.
+3. **Proper CLI Interface:**
+   - Use `argparse` or `typer`; support nested commands.
+4. **File System Scanner:**
+   - Walk directory trees, ignore patterns, find TODOs, output Markdown reports.
+5. **API Client Layer:**
+   - Build reusable HTTP client with error-handling and secrets via env.
+6. **Async Execution:**
+   - Make API calls or file tasks concurrently (`asyncio`).
+7. **Tool Registry:**
+   - Register callable tools, execute by name, validate and log results.
+8. **Agentic Planning Loop (no LLM):**
+   - Basic planning loop: set goal → create plan → execute tools ↑ observe → iterate.
+9. **LLM Integration:**
+   - Connect to OpenAI/Ollama; model chooses tools, returns JSON plans; guardrails.
+10. **Repo Review Agent (Capstone):**
+    - Full workflow: run `workbench review ./repo` → deep scan & actionable report.
+
+---
+
+## 💡 Example Final Product Vision
+
+```bash
+workbench review ./path-to-repo
+```
+
+This will analyze your project and generate:
+
+- Architecture summary
+- File tree overview
+- Detected languages & frameworks
+- TODO/FIXME findings
+- Risk/hot spots
+- Suggested refactors
+- Markdown + JSON report output
+
+---
+
+## 📁 Suggested Folder Structure
+
+```
+python-agentic-workbench/
+  README.md
+  pyproject.toml
+  .env.example
+  .gitignore
+
+  workbench/
+    __init__.py
+    cli.py
+
+    core/
+      config.py
+      logging.py
+      errors.py
+
+    models/
+      task.py
+      project.py
+      report.py
+      tool.py
+
+    services/
+      task_service.py
+      project_service.py
+      scan_service.py
+      report_service.py
+
+    stores/
+      json_store.py
+
+    tools/
+      __init__.py
+      registry.py
+      file_tools.py
+      search_tools.py
+      api_tools.py
+      report_tools.py
+
+    agent/
+      planner.py
+      executor.py
+      memory.py
+      loop.py
+
+    integrations/
+      llm_client.py
+      openai_client.py
+      ollama_client.py
+
+  tests/
+    test_task_service.py
+    test_json_store.py
+    test_scan_service.py
+    test_tool_registry.py
+    test_agent_loop.py
+
+  reports/
+    .gitkeep
+```
+
+---
+
+## ⚙️ Development Principles
+
+- Keep modules small & focused
+- Avoid global mutable state
+- Always use type hints
+- Validate all external input
+- Never hardcode secrets!
+- Log key execution steps
+- Write tests after each milestone
+- Prioritize clear, boring Python
+
+---
+
+## 🏆 Success Definition
+
+You’ve mastered the Python Agentic Workbench when you can:
+
+- Build/run a Python CLI tool confidently
+- Read/write structured files
+- Organize Python projects cleanly
+- Use Python for meaningful automation
+- Build/test API clients
+- Use async workflows to save time
+- Design and reason about tool-based agent systems
+- Integrate LLMs with validation and control (not magic!)
+- Debug your work with logs, tests, and structured reports
+
+---
+
+## 🌱 Stretch Goals (Optional After Baseline)
+
+- Web UI (e.g. FastAPI)
+- SQLite/DB storage
+- Plug-in tool registry
+- Repo memory & vector search
+- GitHub reviews & PR bots
+- Docker/CI pipeline
+- HTML dashboard reports
+- Multi-agent orchestrator
+
+---
+
+Happy hacking — and enjoy the journey of learning real, agentic Python!
