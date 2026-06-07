@@ -1,9 +1,0 @@
-README.md
-pyproject.toml
-python_agentic_workbench.egg-info/PKG-INFO
-python_agentic_workbench.egg-info/SOURCES.txt
-python_agentic_workbench.egg-info/dependency_links.txt
-python_agentic_workbench.egg-info/entry_points.txt
-python_agentic_workbench.egg-info/top_level.txt
-workbench/__init__.py
-workbench/cli.py
