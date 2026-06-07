@@ -13,6 +13,7 @@ Reference: [overview.md](./overview.md)
 3. Run the **Checkpoint** at the end of every phase before continuing.
 4. Write tests after each milestone (Phase 0 sets up pytest).
 5. Keep modules small, use type hints, and never hardcode secrets.
+6. Use [uv](https://docs.astral.sh/uv/) for environment and dependency management. Prefix commands with `uv run` (e.g. `uv run pytest`) so you don't need to activate the venv manually.
 
 **Estimated pace:** 1–2 phases per week if working part-time; adjust as needed.
 
@@ -24,20 +25,20 @@ Reference: [overview.md](./overview.md)
 
 ### Steps
 
-- [ ] **0.1** Create a virtual environment (if not already done):
+- [x] **0.1** Create a virtual environment (if not already done):
   ```bash
-  python -m venv .venv
-  source .venv/bin/activate   # macOS/Linux
+  uv venv
   ```
+  `uv sync` in step 0.6 also creates `.venv` if it is missing, so this step is optional.
 
-- [ ] **0.2** Create `pyproject.toml` with:
+- [x] **0.2** Create `pyproject.toml` with:
   - Project name: `python-agentic-workbench`
   - Python version: `>=3.11`
-  - Dev dependencies: `pytest`, `httpx`, `python-dotenv`
-  - Optional CLI dependency: `typer` (or use stdlib `argparse` later)
+  - `[dependency-groups]` dev: `pytest`, `httpx`, `python-dotenv`, `typer` (or use stdlib `argparse` later)
+  - `[tool.uv] package = true` so `uv sync` installs the project in editable mode
   - Console script entry point placeholder: `workbench = workbench.cli:app`
 
-- [ ] **0.3** Create the package skeleton:
+- [x] **0.3** Create the package skeleton:
   ```text
   workbench/
     __init__.py
@@ -48,23 +49,23 @@ Reference: [overview.md](./overview.md)
     .gitkeep
   ```
 
-- [ ] **0.4** Add `.env.example` with placeholder keys (e.g. `OPENAI_API_KEY=`, `OLLAMA_BASE_URL=`).
+- [x] **0.4** Add `.env.example` with placeholder keys (e.g. `OPENAI_API_KEY=`, `OLLAMA_BASE_URL=`).
 
-- [ ] **0.5** Update `.gitignore` to include:
+- [x] **0.5** Update `.gitignore` to include:
   - `.venv/`, `__pycache__/`, `*.pyc`, `.env`, `tasks.json`, `reports/*.md`, `reports/*.json`
 
-- [ ] **0.6** Install the package in editable mode:
+- [x] **0.6** Install the package in editable mode with dev dependencies:
   ```bash
-  pip install -e ".[dev]"
+  uv sync --group dev
   ```
 
-- [ ] **0.7** Add a smoke test `tests/test_smoke.py` that imports `workbench` and passes.
+- [x] **0.7** Add a smoke test `tests/test_smoke.py` that imports `workbench` and passes.
 
 ### Checkpoint
 
 ```bash
-pytest -v
-python -c "import workbench; print('ok')"
+uv run pytest -v
+uv run python -c "import workbench; print('ok')"
 ```
 
 Both commands succeed.
@@ -162,7 +163,7 @@ Both commands succeed.
 ### Checkpoint
 
 ```bash
-pytest tests/test_json_store.py tests/test_task_service.py -v
+uv run pytest tests/test_json_store.py tests/test_task_service.py -v
 ```
 
 - [ ] Task creation goes through `TaskService`.
@@ -205,7 +206,11 @@ pytest tests/test_json_store.py tests/test_task_service.py -v
   workbench = "workbench.cli:app"
   ```
 
-- [ ] **3.6** Reinstall editable package and verify `workbench --help` works globally in the venv.
+- [ ] **3.6** Re-sync the editable package and verify the CLI is on PATH:
+  ```bash
+  uv sync --group dev
+  uv run workbench --help
+  ```
 
 - [ ] **3.7** Add CLI integration tests (optional but recommended):
   - Use `typer.testing.CliRunner` or subprocess calls
@@ -213,11 +218,11 @@ pytest tests/test_json_store.py tests/test_task_service.py -v
 ### Checkpoint
 
 ```bash
-workbench --help
-workbench task add "Test task"
-workbench task list
-workbench task complete 1
-workbench project create demo
+uv run workbench --help
+uv run workbench task add "Test task"
+uv run workbench task list
+uv run workbench task complete 1
+uv run workbench project create demo
 ```
 
 - [ ] Nested commands work.
@@ -269,7 +274,7 @@ workbench project create demo
 ### Checkpoint
 
 ```bash
-workbench scan .
+uv run workbench scan .
 ```
 
 - [ ] Scanner summarizes the repo in the terminal.
@@ -315,7 +320,7 @@ workbench scan .
 ### Checkpoint
 
 ```bash
-workbench api ping
+uv run workbench api ping
 ```
 
 - [ ] Public API call succeeds.
@@ -412,8 +417,8 @@ workbench api ping
 ### Checkpoint
 
 ```bash
-workbench tool list
-workbench tool run read_file --path README.md
+uv run workbench tool list
+uv run workbench tool run read_file --path README.md
 ```
 
 - [ ] Tools registered in one place.
@@ -471,7 +476,7 @@ workbench tool run read_file --path README.md
 ### Checkpoint
 
 ```bash
-workbench agent run "find all TODO comments in this project"
+uv run workbench agent run "find all TODO comments in this project"
 ```
 
 - [ ] Agent executes multiple tool steps.
@@ -610,7 +615,7 @@ workbench agent run "find all TODO comments in this project"
 ### Checkpoint
 
 ```bash
-workbench review .
+uv run workbench review .
 ls reports/
 cat reports/repo-review.md
 ```
@@ -636,28 +641,28 @@ cat reports/repo-review.md
 
 - [ ] **11.3** Ensure full test suite passes:
   ```bash
-  pytest -v --cov=workbench
+  uv run pytest -v --cov=workbench
   ```
 
 - [ ] **11.4** Update `README.md` with:
-  - Install instructions
+  - Install instructions (`uv sync --group dev`)
   - All CLI commands with examples
   - Environment variable reference
   - Example report output
 
 - [ ] **11.5** Add a `Makefile` or `justfile` with common commands:
   ```makefile
-  install: pip install -e ".[dev]"
-  test:  pytest -v
-  lint:  ruff check workbench tests
-  review: workbench review .
+  install: uv sync --group dev
+  test:  uv run pytest -v
+  lint:  uv run ruff check workbench tests
+  review: uv run workbench review .
   ```
 
 ### Checkpoint
 
 ```bash
 make test
-workbench review . --output-dir reports/
+uv run workbench review . --output-dir reports/
 ```
 
 Full test suite green. README matches actual behavior.
@@ -666,20 +671,22 @@ Full test suite green. README matches actual behavior.
 
 ## Quick Reference: Build Order
 
-| Phase | Milestone              | Key Deliverable                          |
-|-------|------------------------|------------------------------------------|
-| 0     | Setup                  | Package skeleton + pytest                |
-| 1     | Task Manager           | JSON-backed task CRUD                    |
-| 2     | Models & Services      | Dataclasses + service/store split        |
-| 3     | CLI                    | `workbench task/project` commands        |
-| 4     | File Scanner           | `workbench scan` + Markdown report       |
-| 5     | API Client             | HTTP client with retry + env secrets     |
-| 6     | Async                  | Concurrent scan/API operations           |
-| 7     | Tool Registry          | Register and execute tools by name       |
-| 8     | Agent Loop             | Rule-based plan → execute → report       |
-| 9     | LLM Integration        | LLM-driven planning + guardrails         |
-| 10    | Repo Review            | `workbench review` capstone              |
-| 11    | Polish                 | Logging, tests, docs                     |
+
+| Phase | Milestone         | Key Deliverable                      |
+| ----- | ----------------- | ------------------------------------ |
+| 0     | Setup             | Package skeleton + pytest            |
+| 1     | Task Manager      | JSON-backed task CRUD                |
+| 2     | Models & Services | Dataclasses + service/store split    |
+| 3     | CLI               | `workbench task/project` commands    |
+| 4     | File Scanner      | `workbench scan` + Markdown report   |
+| 5     | API Client        | HTTP client with retry + env secrets |
+| 6     | Async             | Concurrent scan/API operations       |
+| 7     | Tool Registry     | Register and execute tools by name   |
+| 8     | Agent Loop        | Rule-based plan → execute → report   |
+| 9     | LLM Integration   | LLM-driven planning + guardrails     |
+| 10    | Repo Review       | `workbench review` capstone          |
+| 11    | Polish            | Logging, tests, docs                 |
+
 
 ---
 
@@ -707,3 +714,4 @@ Pick these up only after the capstone works end-to-end:
 3. **Keep the CLI working** — even mid-refactor, one command should always run.
 4. **Read the logs** — when the agent misbehaves in Phases 8–10, logs are your debugger.
 5. **Start with one LLM provider** — get OpenAI *or* Ollama working before supporting both.
+

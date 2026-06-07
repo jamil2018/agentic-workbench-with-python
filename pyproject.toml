@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "python-agentic-workbench"
 version = "0.1.0"
@@ -6,7 +10,20 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []
 
+[project.scripts]
+workbench = "workbench.cli:app"
+
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.0.3",
+    "python-dotenv>=1.2.2",
+    "typer>=0.26.7",
     "watchfiles>=1.2.0",
 ]
+
+[tool.setuptools.packages.find]
+include = ["workbench*"]
+
+[tool.uv]
+package = true
