@@ -80,12 +80,12 @@ Both commands succeed.
 
 ### Steps
 
-- [ ] **1.1** Create `workbench/stores/json_store.py` with generic helpers:
+- [x] **1.1** Create `workbench/stores/json_store.py` with generic helpers:
   - `load_json(path: Path) -> list | dict`
   - `save_json(path: Path, data) -> None`
   - Handle missing file (return empty list) and invalid JSON (raise readable error).
 
-- [ ] **1.2** Create `workbench/services/task_service.py` (simple version first — no classes yet):
+- [x] **1.2** Create `workbench/services/task_service.py` (simple version first — no classes yet):
   - `TASKS_FILE = Path("tasks.json")`
   - `add_task(title: str) -> dict`
   - `list_tasks() -> list[dict]`
@@ -93,21 +93,21 @@ Both commands succeed.
   - `delete_task(task_id: int) -> None`
   - Each task dict: `{ "id", "title", "completed" }`
 
-- [ ] **1.3** Create a minimal `workbench/cli.py` with a simple menu loop (temporary — replaced in Phase 3):
+- [x] **1.3** Create a minimal `workbench/cli.py` with a simple menu loop (temporary — replaced in Phase 3):
   - Options: add, list, complete, delete, quit
   - Read user input from `input()`
 
-- [ ] **1.4** Wire `main.py` or the CLI entry point to call the menu loop.
+- [x] **1.4** Wire `main.py` or the CLI entry point to call the menu loop.
 
-- [ ] **1.5** Manually test all four operations; confirm `tasks.json` persists after restart.
+- [x] **1.5** Manually test all four operations; confirm `tasks.json` persists after restart.
 
 ### Checkpoint
 
-- [ ] Add a task from the terminal.
-- [ ] List all saved tasks.
-- [ ] Mark a task complete.
-- [ ] Delete a task.
-- [ ] Quit and relaunch — data is still there.
+- [x] Add a task from the terminal.
+- [x] List all saved tasks.
+- [x] Mark a task complete.
+- [x] Delete a task.
+- [x] Quit and relaunch — data is still there.
 
 ---
 
